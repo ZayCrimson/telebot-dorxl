@@ -47,7 +47,7 @@ python bot_telegram.py
 ```
 
 ## .env Example
-tambah ini dibawah env api yg udah kalian copy pemilik repo aslinya
+tambah ini dibawah env api yg udah kalian copy dari pemilik repo aslinya
 ```bash
 TELEGRAM_BOT_TOKEN=BOT_TOKEN_KAMU
 BOT_ALLOWED_IDS=ID_TELE_KAMU
