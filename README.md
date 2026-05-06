@@ -1,58 +1,66 @@
-# MYnyak Engsel Sunset
+# MYnyak Engsel Sunset - Bot Telegram by @JustZayy
 
-![banner](bnr.png)
+CLI client untuk beberapa layanan provider Indonesia.
 
-CLI client for a certain Indonesian mobile internet service provider.
+## Install & Run di Termux
 
-# How to get environtment Variables
-Go to [OUR TELEGRAM CHANNEL](https://t.me/alyxcli)
-Copy the provided environment variables and paste it into a text file named `.env` in the same directory as `main.py`.
-You can use nano or any text editor to create the file.
+1. Update & upgrade Termux:
 
-# How to run with TERMUX
-1. Update & Upgrade Termux
-```
+```bash
 pkg update && pkg upgrade -y
 ```
-2. Install Git
+
+2. Install Git & Python:
+
+```bash
+pkg install git python -y
 ```
-pkg install git -y
+
+3. Clone repo:
+
+```bash
+git clone https://github.com/zaycrimson/telebot-dorxl.git
+cd telebot-dorxl
 ```
-3. Clone this repo
-```
-git clone https://github.com/purplemashu/me-cli-sunset
-```
-4. Open the folder
-```
-cd me-cli-sunset
-```
-5. Setup
-```
+
+4. Setup:
+
+```bash
 bash setup.sh
 ```
-6. Run the script
+
+5. Jalankan bot:
+
+```bash
+python bot_telegram.py
 ```
-python main.py
-```
 
-# Info
+## .env Example
+tambah ini dibawah env api yg udah kalian copy pemilik repo aslinya
 
-## PS for Certain Indonesian mobile internet service provider
-
-Instead of just delisting the package from the app, ensure the user cannot purchase it.
-What's the point of strong client side security when the server don't enforce it?
-
-## Terms of Service
-By using this tool, the user agrees to comply with all applicable laws and regulations and to release the developer from any and all claims arising from its use.
-
-## Contact
-
-contact@mashu.lol
-
+TELEGRAM_BOT_TOKEN=BOT_TOKEN_KAMU
+BOT_ALLOWED_IDS=ID_TELE_KAMU
+CLI_COMMAND=python -u bot_telegram.py
 WA_QRIS_FAMCODE=45c3a622-8c06-4bb1-8e56-bba1f3434600
+CLI_READ_TIMEOUT=20.0
+CLI_IDLE_TIMEOUT=2.0
+CLI_PROMPT_GRACE=0.8
+QRIS_OUTPUT_DIR=tmp_qris
+QRIS_BOX_SIZE=10
+QRIS_BORDER=4
+WA_QRIS_PACKAGE_NUMBER=4
+WA_QRIS_PAYMENT_NUMBER=3
+WA_QRIS_PAYMENT_AMOUNT=5000
+
+**Note:** Semua API/Token yang dimasukkan di .env harus didapat dari repository asli: https://github.com/purplemashu/me-cli-sunset agar bot berjalan dengan benar. Jangan sembarang masukin value.
 
 ## WA QRIS Button Flow
 
-Tombol **⚡ WA QRIS** otomatis menjalankan flow CLI:
+Tombol **⚡ WA QRIS** otomatis menjalankan flow CLI:  
 `6` -> `WA_QRIS_FAMCODE` -> `WA_QRIS_PACKAGE_NUMBER` -> `WA_QRIS_PAYMENT_NUMBER` -> `WA_QRIS_PAYMENT_AMOUNT`.
-Default-nya: `6 -> kode .env -> 4 -> 3 -> 5000`.
+
+## Credit
+
+Script asli dari: https://github.com/purplemashu/me-cli-sunset
+
+Bot Telegram dibuat oleh **@JustZayy**
