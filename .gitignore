@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+refresh-tokens.json
+active.number
+bookmark.json
+ax.fp
+
+tmp/
+cache/
+sessions/
+
+qris.png
+*.session
