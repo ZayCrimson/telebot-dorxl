@@ -37,7 +37,7 @@ python bot_telegram.py
 
 ## .env Example
 tambah ini dibawah env api yg udah kalian copy pemilik repo aslinya
-
+```bash
 TELEGRAM_BOT_TOKEN=BOT_TOKEN_KAMU
 BOT_ALLOWED_IDS=ID_TELE_KAMU
 CLI_COMMAND=python -u bot_telegram.py
@@ -51,6 +51,7 @@ QRIS_BORDER=4
 WA_QRIS_PACKAGE_NUMBER=4
 WA_QRIS_PAYMENT_NUMBER=3
 WA_QRIS_PAYMENT_AMOUNT=5000
+```
 
 **Note:** Semua API/Token yang dimasukkan di .env harus didapat dari repository asli: https://github.com/purplemashu/me-cli-sunset agar bot berjalan dengan benar. Jangan sembarang masukin value.
 
