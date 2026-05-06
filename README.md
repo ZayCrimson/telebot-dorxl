@@ -20,16 +20,27 @@ pkg install git python -y
 
 ```bash
 git clone https://github.com/zaycrimson/telebot-dorxl.git
+```
+
+4. open directory
+```bash
 cd telebot-dorxl
 ```
 
-4. Setup:
+5. create .env
+```bash
+nano .env
+```
+isi API XL dll kedalam .env
+
+
+6. Setup:
 
 ```bash
 bash setup.sh
 ```
 
-5. Jalankan bot:
+7. Jalankan bot:
 
 ```bash
 python bot_telegram.py
