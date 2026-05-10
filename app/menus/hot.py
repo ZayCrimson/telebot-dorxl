@@ -31,7 +31,7 @@ def show_hot_menu():
             print(f"{idx + 1}. {p['family_name']} - {p['variant_name']} - {p['option_name']}")
             print("-" * WIDTH)
         
-        print("00. Kembali ke menu utama")
+        print("00. Kembali")
         print("-" * WIDTH)
         choice = input("Pilih paket (nomor): ")
         if choice == "00":
@@ -91,7 +91,7 @@ def show_hot_menu2():
             print(f"{idx + 1}. {p['name']}\n   Harga: {p['price']}")
             print("-" * WIDTH)
         
-        print("00. Kembali ke menu utama")
+        print("00. Kembali")
         print("-" * WIDTH)
         choice = input("Pilih paket (nomor): ")
         if choice == "00":

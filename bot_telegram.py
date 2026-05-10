@@ -58,7 +58,7 @@ MENU_BUTTONS = [
     [("📜 Riwayat", "8"), ("🚪 Ganti Akun", "1")],
     [("📊 Segments", "11"), ("👨‍👩‍👧 Fam List", "12")],
     [("🔁 Loop FamCode", "7"), ("🎁 Redeem", "14")],
-    [("⬅️ Bot Utama", "refresh"), ("♻️ Restart CLI", "restart")],
+    [("⬅️ kembali", "00"), ("♻️ Restart CLI", "restart")],
 ]
 
 # Alias tombol yang tidak ada padanan menu angka langsung.
@@ -100,6 +100,7 @@ PROMPT_HINTS = (
 
 ANSI_RE = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
 QRIS_IMAGE_RE = re.compile(r"(?m)^QRIS_IMAGE_PATH:(.+)$")
+DANA_PAYMENT_LINK_RE = re.compile(r"https?://[^\s<>\"]*dana\.id/[^\s<>\"]+")
 
 
 def clean_output(text: str) -> str:
@@ -123,6 +124,24 @@ def extract_qris_image_paths(text: str) -> tuple[str, list[Path]]:
 
     cleaned = QRIS_IMAGE_RE.sub(_collect, text)
     return cleaned.strip(), paths
+
+def extract_dana_payment_links(text: str) -> tuple[str, list[str]]:
+    """Pisahkan link DANA dari output CLI supaya dikirim sebagai pesan sendiri.
+
+    Kalau link ikut masuk <pre>, Telegram jadi nyebelin buat dicopy.
+    Jadi kita cabut link-nya dari teks panjang, lalu kirim link mentah satu per satu.
+    """
+    links: list[str] = []
+
+    def _collect(match: re.Match) -> str:
+        link = match.group(0).strip().rstrip(".,)")
+        if link not in links:
+            links.append(link)
+        return "[LINK DANA DIKIRIM TERPISAH]"
+
+    cleaned = DANA_PAYMENT_LINK_RE.sub(_collect, text)
+    cleaned = re.sub(r"\n{4,}", "\n\n", cleaned)
+    return cleaned.strip(), links
 
 
 def chunk_text(text: str, limit: int = MAX_MESSAGE_LENGTH):
@@ -291,11 +310,23 @@ async def send_cli_output(update: Update, text: str):
     target = update.effective_message
     text = clean_output(text)
     text, qris_images = extract_qris_image_paths(text)
+    text, dana_links = extract_dana_payment_links(text)
 
     if text:
         for chunk in chunk_text(text):
             await target.reply_text(f"<pre>{html.escape(chunk)}</pre>", parse_mode=ParseMode.HTML)
-    elif not qris_images:
+
+    for link in dana_links:
+        keyboard = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💳 Bayar DANA", url=link)]
+        ])
+        await target.reply_text(
+            "🔗 Link pembayaran DANA:",
+            reply_markup=keyboard,
+            disable_web_page_preview=True,
+        )
+
+    if not text and not qris_images and not dana_links:
         await target.reply_text("✅ Input diproses. Kalau tidak ada output, kemungkinan CLI sedang menunggu input lanjutan.")
 
     for image_path in qris_images:

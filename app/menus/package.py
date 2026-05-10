@@ -563,7 +563,7 @@ def get_packages_by_family(
             variant_number += 1
         print("-------------------------------------------------------")
 
-        print("00. Kembali ke menu utama")
+        print("00. Kembali")
         print("-------------------------------------------------------")
         pkg_choice = input("Pilih paket (nomor): ")
         if pkg_choice == "00":

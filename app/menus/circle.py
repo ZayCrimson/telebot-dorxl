@@ -259,7 +259,7 @@ def show_circle_info(api_key: str, tokens: dict):
         print("del <number> - Remove Member from Circle (e.g., del 1)")
         print("acc <number> - Accept Invitation / Force Accept Member")
         print("2. View Circle Bonus List")
-        print("00. Kembali ke menu utama")
+        print("00. Kembali")
         choice = input("Pilih opsi: ")
         if choice == "00":
             in_circle_menu = False

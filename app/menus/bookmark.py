@@ -23,7 +23,7 @@ def show_bookmark_menu():
         for idx, bm in enumerate(bookmarks):
             print(f"{idx + 1}. {bm['family_name']} - {bm['variant_name']} - {bm['option_name']}")
         
-        print("00. Kembali ke menu utama")
+        print("00. Kembali")
         print("000. Hapus Bookmark")
         print("-------------------------------------------------------")
         choice = input("Pilih bookmark (nomor): ")

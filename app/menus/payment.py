@@ -40,7 +40,7 @@ def show_transaction_history(api_key, tokens):
 
         # Option
         print("0. Refresh")
-        print("00. Kembali ke Menu Utama")
+        print("00. Kembali")
         choice = input("Pilih opsi: ")
         if choice == "0":
             continue

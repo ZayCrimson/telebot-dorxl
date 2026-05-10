@@ -100,7 +100,7 @@ def show_account_menu():
         print("0: Tambah Akun")
         print("Masukan nomor urut akun untuk berganti.")
         print("Masukan del <nomor urut> untuk menghapus akun tertentu.")
-        print("00: Kembali ke menu utama")
+        print("00: Kembali")
         print("-" * 55)
         input_str = input("Pilihan:")
         if input_str == "00":
