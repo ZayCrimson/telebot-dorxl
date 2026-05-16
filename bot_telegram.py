@@ -49,7 +49,7 @@ CLI_PROMPT_GRACE = float(os.getenv("CLI_PROMPT_GRACE", "0.8"))
 MAX_MESSAGE_LENGTH = 3900
 
 MENU_BUTTONS = [
-    [("⚡ WA QRIS", "wa_qris")],
+    [("⚡ WA QRIS", "wa_qris"), ("💳 WA DANA", "wa_dana")],
     [("📦 Paketku", "2"), ("✏️ Nama", "nama"), ("🔖 Bookmarks", "00")],
     [("🔥 HOT 1", "3"), ("🔥 HOT 2", "4"), ("🏪 Store Menu", "13")],
     [("🛒 Beli (Code)", "5"), ("🔍 FamCode", "6")],
@@ -71,6 +71,14 @@ WA_QRIS_FAMCODE = os.getenv("WA_QRIS_FAMCODE", "45c3a622-8c06-4bb1-8e56-bba1f343
 WA_QRIS_PACKAGE_NUMBER = os.getenv("WA_QRIS_PACKAGE_NUMBER", "4")
 WA_QRIS_PAYMENT_NUMBER = os.getenv("WA_QRIS_PAYMENT_NUMBER", "3")
 WA_QRIS_PAYMENT_AMOUNT = os.getenv("WA_QRIS_PAYMENT_AMOUNT", "5000")
+
+WA_DANA_FAMCODE = os.getenv("WA_DANA_FAMCODE", WA_QRIS_FAMCODE)
+WA_DANA_PACKAGE_NUMBER = os.getenv("WA_DANA_PACKAGE_NUMBER", "4")
+WA_DANA_PAYMENT_NUMBER = os.getenv("WA_DANA_PAYMENT_NUMBER", "2")
+WA_DANA_EWALLET_NUMBER = os.getenv("WA_DANA_EWALLET_NUMBER", "1")
+DANA_NUMBER = os.getenv("DANA_NUMBER", os.getenv("WA_DANA_MSISDN", "081358238538"))
+WA_DANA_MSISDN = DANA_NUMBER
+WA_DANA_PAYMENT_AMOUNT = os.getenv("WA_DANA_PAYMENT_AMOUNT", "5000")
 
 
 PROMPT_HINTS = (
@@ -424,6 +432,45 @@ async def run_wa_qris_flow(update: Update, user_id: int):
     await send_cli_output(update, "\n\n".join(combined) or "Flow WA QRIS selesai, tapi CLI tidak ngasih output baru.")
 
 
+async def run_wa_dana_flow(update: Update, user_id: int):
+    """Auto flow WA DANA / e-wallet.
+
+    Urutan sesuai CLI:
+    6 -> famcode dari .env -> nomor paket -> e-wallet -> DANA -> nomor DANA -> nominal payment.
+    Default: 6, WA_DANA_FAMCODE, 4, 2, 1, 081358238538, 5000.
+    """
+    session = get_session(user_id)
+    steps = [
+        ("6", "🔍 Membuka menu FamCode..."),
+        (WA_DANA_FAMCODE, "📨 Mengirim kode dari .env..."),
+        (WA_DANA_PACKAGE_NUMBER, f"📦 Memilih nomor paket {WA_DANA_PACKAGE_NUMBER}..."),
+        (WA_DANA_PAYMENT_NUMBER, f"💳 Memilih metode pembayaran e-wallet nomor {WA_DANA_PAYMENT_NUMBER}..."),
+        (WA_DANA_EWALLET_NUMBER, f"💙 Memilih DANA nomor {WA_DANA_EWALLET_NUMBER}..."),
+        (WA_DANA_MSISDN, f"📱 Mengisi nomor DANA {WA_DANA_MSISDN}..."),
+        (WA_DANA_PAYMENT_AMOUNT, f"💰 Mengisi nominal payment {WA_DANA_PAYMENT_AMOUNT}..."),
+    ]
+    combined = []
+    await update.effective_message.reply_text("💳 Menjalankan WA DANA otomatis...")
+
+    for value, label in steps:
+        await update.effective_message.reply_text(label)
+        out = await session.send(value)
+        if out:
+            combined.append(out)
+
+        await asyncio.sleep(0.9)
+        more = await session.read_available(timeout=READ_TIMEOUT)
+        if more:
+            combined.append(more)
+
+    # Link/payment DANA biasanya muncul setelah nominal dikirim, jadi baca sedikit lebih lama.
+    final_more = await session.read_available(timeout=max(READ_TIMEOUT, 25.0))
+    if final_more:
+        combined.append(final_more)
+
+    await send_cli_output(update, "\n\n".join(combined) or "Flow WA DANA selesai, tapi CLI tidak ngasih output baru.")
+
+
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -447,6 +494,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     if choice == "wa_qris":
         await run_wa_qris_flow(update, user_id)
+        return
+
+    if choice == "wa_dana":
+        await run_wa_dana_flow(update, user_id)
         return
 
     send_value = MENU_ALIASES.get(choice, choice)

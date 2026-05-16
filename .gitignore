@@ -14,3 +14,4 @@ sessions/
 
 qris.png
 *.session
+.env
