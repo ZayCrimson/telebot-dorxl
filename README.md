@@ -62,6 +62,13 @@ QRIS_BORDER=4
 WA_QRIS_PACKAGE_NUMBER=4
 WA_QRIS_PAYMENT_NUMBER=3
 WA_QRIS_PAYMENT_AMOUNT=5000
+# WA DANA
+WA_DANA_FAMCODE=45c3a622-8c06-4bb1-8e56-bba1f3434600
+WA_DANA_PACKAGE_NUMBER=4
+WA_DANA_PAYMENT_NUMBER=2
+WA_DANA_EWALLET_NUMBER=1
+WA_DANA_PAYMENT_AMOUNT=5000
+DANA_NUMBER=
 ```
 
 **Note:** Semua API/Token yang dimasukkan di .env harus didapat dari repository asli: https://github.com/purplemashu/me-cli-sunset agar bot berjalan dengan benar. Jangan sembarang masukin value.
